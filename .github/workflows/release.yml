@@ -46,12 +46,44 @@ jobs:
       - run: npm run build
         if: ${{ steps.release.outputs.release_created }}
 
-      - run: npx pkg Build/App.js --target latest-win-x64,latest-linux-x64,latest-macos-x64,latest-alpine-x64 -C GZip -o dealerI18n
+      - run: npx pkg Build/App.js --target latest-win-x64,latest-linux-x64,latest-macos-x64,latest-alpine-x64 -C GZip -o bin/dealerI18n
         if: ${{ steps.release.outputs.release_created }}
 
-      - name: Upload executable as artifact
+      - name: Upload Windows executable as artifact
         uses: actions/upload-artifact@v4
         if: ${{ steps.release.outputs.release_created }}
         with:
-          name: dealerI18n
-          path: ./dealerI18n
+          name: dealerI18n-win
+          path: ./bin/dealerI18n-win.exe
+
+      - name: Upload Linux executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-linux
+          path: ./bin/dealerI18n-linux
+
+      - name: Upload MacOS executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-macos
+          path: ./bin/dealerI18n-macos
+
+      - name: Upload Alpine executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-alpine
+          path: ./bin/dealerI18n-alpine
+
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.ANDESITE_TOKEN }}
+        run: |
+          gh release upload ${{ steps.release.outputs.version }} ./bin/dealerI18n-win.exe --clobber
+          gh release upload ${{ steps.release.outputs.version }} ./bin/dealerI18n-linux --clobber
+          gh release upload ${{ steps.release.outputs.version }} ./bin/dealerI18n-macos --clobber
+          gh release upload ${{ steps.release.outputs.version }} ./bin/dealerI18n-alpine --clobber
+        if: ${{ steps.release.outputs.release_created }}
+
