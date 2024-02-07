@@ -1,0 +1,30 @@
+{
+  "name": "@basalt-lab/basalt-logger",
+  "version": "1.5.1",
+  "description": "Logger module for Basalt Framework",
+  "main": "Build/App.js",
+  "types": "Build/App.d.ts",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "fix-lint": "eslint --fix . --ext .ts",
+    "check-types": "tsc --noEmit",
+    "create-types": "tsc --emitDeclarationOnly && tsc-alias",
+    "dev": "ESBUILD_ENV=dev node esbuild.config.js",
+    "build": "npm run check-types && ESBUILD_ENV=prod node esbuild.config.js"
+  },
+  "author": "Ruby",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "esbuild": "^0.19.12",
+    "esbuild-plugin-alias": "^0.2.1",
+    "eslint": "^8.56.0",
+    "tsc-alias": "^1.8.8",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  }
+}
