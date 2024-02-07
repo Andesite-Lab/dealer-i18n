@@ -1,0 +1,81 @@
+name: Release
+run-name: Release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release-Please
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          token: ${{ secrets.ANDESITE_TOKEN }}
+          changelog-types: >
+            [
+              { "type": "feat", "section": "Features", "hidden": false },
+              { "type": "fix", "section": "Bug Fixes", "hidden": false },
+              { "type": "perf", "section": "Performance Improvements", "hidden": false },
+              { "type": "refactor", "section": "Code Refactoring", "hidden": false },
+              { "type": "build", "section": "Build System", "hidden": false },
+              { "type": "test", "section": "Tests", "hidden": false },
+              { "type": "ci", "section": "Continuous Integration", "hidden": false },
+              { "type": "docs", "section": "Documentation", "hidden": false },
+              { "type": "chore", "section": "Miscellaneous Chores", "hidden": false },
+              { "type": "revert", "section": "Reverts", "hidden": false },
+              { "type": "style", "section": "Styles", "hidden": false }
+            ]
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Build to bin and set in release
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21.6
+          registry-url: 'https://registry.npmjs.org'
+        if: ${{ steps.release.outputs.release_created }}
+
+      - run: npm install
+        if: ${{ steps.release.outputs.release_created }}
+
+      - run: npm run build
+        if: ${{ steps.release.outputs.release_created }}
+
+      - run: npx pkg Build/App.js --target latest-win-x64,latest-linux-x64,latest-macos-x64,latest-alpine-x64 -C GZip -o bin/dealerI18n
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Upload Windows executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-win
+          path: ./bin/dealerI18n-win.exe
+
+      - name: Upload Linux executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-linux
+          path: ./bin/dealerI18n-linux
+
+      - name: Upload MacOS executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-macos
+          path: ./bin/dealerI18n-macos
+
+      - name: Upload Alpine executable as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          name: dealerI18n-alpine
+          path: ./bin/dealerI18n-alpine
+
+
+
