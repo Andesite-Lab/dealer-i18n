@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@basalt-lab/basalt-logger':
+    specifier: ^1.5.1
+    version: 1.5.1
   commander:
     specifier: ^12.0.0
     version: 12.0.0
@@ -41,6 +44,10 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /@basalt-lab/basalt-logger@1.5.1:
+    resolution: {integrity: sha512-csPPNU3p3Zz3O2bJpby24nrM/e7zl9lVFaBY86Rtqf/NdD0FRp1mc+crYdMaf7Z5eP7LUbUJ4Lo3PnG9Zimzqg==}
+    dev: false
 
   /@esbuild/aix-ppc64@0.19.12:
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
