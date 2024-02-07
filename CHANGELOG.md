@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/Andesite-Lab/dealer-i18n/compare/v1.0.0...v1.1.0) (2024-02-07)
+
+
+### Features
+
+* add new features ([117ec7b](https://github.com/Andesite-Lab/dealer-i18n/commit/117ec7bb7bd925c758a278918733a8c0ed0e7d16))
+
+
+### Build System
+
+* add basalt logger ([f5e50e2](https://github.com/Andesite-Lab/dealer-i18n/commit/f5e50e21e600440eddd5e74731c5abcbc738f643))
+
 ## 1.0.0 (2024-02-07)
 
 

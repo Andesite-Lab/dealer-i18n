@@ -1,6 +1,6 @@
 {
   "name": "@basalt-lab/basalt-logger",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Logger module for Basalt Framework",
   "main": "Build/App.js",
   "types": "Build/App.d.ts",
