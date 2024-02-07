@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/Andesite-Lab/dealer-i18n/compare/v1.0.0...v1.1.0) (2024-02-07)
+
+
+### Features
+
+* add  new features ([1247ba7](https://github.com/Andesite-Lab/dealer-i18n/commit/1247ba7a16fa0cda664799f3799100c856c118b3))
+
 ## 1.0.0 (2024-02-07)
 
 
