@@ -73,7 +73,6 @@ function deleteFilesInDirectory(directory: string): void {
         unlinkSync(join(directory, file));
 }
 
-
 function regenerateFiles(template: TranslationStructure, destination: string, langs: string[]): void {
     deleteFilesInDirectory(destination);
     langs.forEach((lang: string): void => {
@@ -153,10 +152,56 @@ function sortObjectKeys(obj: TranslationStructure): TranslationStructure {
     return result;
 }
 
+function transformOldTranslateFileToTemplate(obj: TranslationStructure, langKey: string): TranslationStructure {
+    if (Array.isArray(obj))
+        return { [langKey]: obj };
+    else if (typeof obj === 'object' && obj !== null)
+        for (const key in obj)
+            obj[key] = transformOldTranslateFileToTemplate(obj[key] as TranslationStructure, langKey);
+    else
+        return { [langKey]: obj };
+    return obj;
+}
+
 const commander: Command = new Command();
 
 commander.version(packageJsonConfiguration.version, '-v, --version', 'Output the current version');
+
 commander
+    .command('transform')
+    .description('Create a new template based on the old translation file')
+    .requiredOption('-s, --source <source>', 'Path to the old translation file')
+    .requiredOption('-l, --lang <lang>', 'what is language (en, fr, es, etc)')
+    .action(async (options: { source: string, lang: string }): Promise<void> => {
+        try {
+            BasaltLogger.addStrategy('console', new ConsoleLoggerStrategy());
+            BasaltLogger.log('Checking the source file...');
+            checkSourceFile(options.source);
+            if (isJson(options.source)) {
+                const oldTranslateFile: TranslationStructure = JSON.parse(readFileSync(options.source, 'utf-8'));
+                BasaltLogger.log('Transforming the old translation file to a template...');
+                let template: TranslationStructure = transformOldTranslateFileToTemplate(oldTranslateFile, `lang:${options.lang}`);
+                template = updateConfDealer(options.source, template, [options.lang]);
+                template = sortObjectKeys(template);
+                BasaltLogger.log('Writing the template file...');
+                writeInTemplateFile('./template.json', template);
+            } else {
+                throw new Error('The source file is not a JSON file');
+            }
+
+        } catch (e) {
+            BasaltLogger.error(e);
+            setTimeout((): void => {
+                exit(1);
+            }, 200);
+        }
+        exit(0);
+    });
+
+
+commander
+    .command('start')
+    .description('Start the translation process')
     .requiredOption('-s, --source <source>', 'Path to the template')
     .requiredOption('-d, --destination <destination>', 'Path to the dir destination')
     .action(async (options: IOptions): Promise<void> => {
@@ -192,7 +237,7 @@ commander
 
             let update: boolean = false;
 
-            BasaltLogger.info('Watching for changes in the source file...');
+            BasaltLogger.log('Watching for changes in the source file...');
             watch(options.source, (event: 'rename' | 'change'): void => {
                 if (event === 'change') {
                     if (update) {
@@ -251,5 +296,6 @@ commander
             }, 200);
         }
 
-    })
-    .parse(argv);
+    });
+
+commander.parse(argv);
