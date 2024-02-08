@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Andesite-Lab/dealer-i18n/compare/v1.1.0...v1.2.0) (2024-02-08)
+
+
+### Features
+
+* add command for generate template.json by old translate file ([6528b3e](https://github.com/Andesite-Lab/dealer-i18n/commit/6528b3ea8b18d90246e415c37e6c4f17459bc69b))
+
 ## [1.1.0](https://github.com/Andesite-Lab/dealer-i18n/compare/v1.0.0...v1.1.0) (2024-02-07)
 
 
